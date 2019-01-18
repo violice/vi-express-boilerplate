@@ -1,7 +1,6 @@
-const express = require('express');
-
-const userRouter = require('./user');
-const authRouter = require('./auth');
+import express from 'express';
+import userRouter from './user';
+import authRouter from './auth';
 
 const apiRouter = express.Router();
 apiRouter.use('/', authRouter);

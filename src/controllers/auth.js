@@ -1,5 +1,6 @@
-const jwt = require('jsonwebtoken');
-const { userModel } = require('../models');
+import jwt from 'jsonwebtoken';
+import { userModel } from '../models';
+
 const secret = '666B2076FB63ABC711101483F16B6E321765FDDC6706D50DC88ED3C387A65AD6';
 
 const login = async (req, res) => {
@@ -16,7 +17,7 @@ const login = async (req, res) => {
       const token = jwt.sign(user, secret, { expiresIn: 60 * 60 * 24 * 7 });
       res.status(200).json({ user, token });
     } else {
-      res.status(422).json({ error: 'User with such email wasn\'t found' });
+      res.status(422).json({ error: 'User with such username wasn\'t found' });
     }
   } catch (e) {
     res.status(422).json({
@@ -49,4 +50,4 @@ const registration = async (req, res) => {
   }
 }
 
-module.exports = { login, registration };
+export default { login, registration };
