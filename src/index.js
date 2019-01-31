@@ -22,8 +22,8 @@ db.sync()
     console.log('DB - OK');
     const server = http.createServer(app);
     server.listen(3000);
-    console.log('SERVER - OK')
+    console.log('SERVER - OK');
   })
-  .catch((e) => console.error('DB - CONNECT/SYNC ERROR'));
+  .catch((e) => console.error('DB - CONNECT/SYNC ERROR', e));
 
 

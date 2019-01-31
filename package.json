@@ -7,8 +7,8 @@
     "start": "nodemon --exec babel-node src",
     "build": "babel src --out-dir dist"
   },
-  "author": "violice",
-  "license": "ISC",
+  "author": "Sergey Ivashko",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
