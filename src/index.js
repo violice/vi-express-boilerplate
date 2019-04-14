@@ -2,10 +2,12 @@ import express from 'express';
 import http from 'http';
 import bodyParser from 'body-parser';
 
-import cors from './middlewares/cors';
 import jwt from './middlewares/jwt';
 import routes from './routes';
-import db from './db';
+
+import env from './env';
+import cors from './cors';
+import schema from './schema';
 
 const app = express();
 app.use(cors);
@@ -17,13 +19,10 @@ const router = express.Router();
 router.use('/api', routes);
 app.use('/', router);
 
-db.sync()
+schema.sync()
   .then(() => {
-    console.log('DB - OK');
     const server = http.createServer(app);
-    server.listen(3000);
-    console.log('SERVER - OK');
+    server.listen(env.PORT);
+    console.log(`--- SERVER LISTENED AT PORT ${env.PORT} ---`);
   })
-  .catch((e) => console.error('DB - CONNECT/SYNC ERROR', e));
-
-
+  .catch((e) => console.error('--- DB CONNECT/SYNC ERROR ---', e));

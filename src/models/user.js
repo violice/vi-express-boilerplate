@@ -1,9 +1,7 @@
-import Sequelize from 'sequelize';
-import db from '../db';
+import { STRING } from 'sequelize';
+import schema from '../schema';
 
-const User = db.define('user', {
-    username: Sequelize.STRING,
-    password: Sequelize.STRING,
+export default schema.define('user', {
+    username: STRING,
+    password: STRING,
 });
-
-module.exports = User;
