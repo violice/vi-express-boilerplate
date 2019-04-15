@@ -1,26 +1,32 @@
 import jwt from 'jsonwebtoken';
 
-const secret = '666B2076FB63ABC711101483F16B6E321765FDDC6706D50DC88ED3C387A65AD6';
+import env from 'env';
+
+const WHITE_LIST = [
+  '/api/login',
+  '/api/registration'
+];
 
 export default (req, res, next) => {
-  if(['/api/login','/api/registration'].includes(req.path)){
+  if (WHITE_LIST.includes(req.path)) {
     next();
-    return null;
-  }
-  const token = (req.body && req.body.token) || (req.query && req.query.token) || req.headers['x-access-token'];
-  if (token) {
-    jwt.verify(token, secret, (err, decoded) => {
-      if (err) {
-        return res.status(403).json({ success: false, message: 'Failed to authenticate token.' });
-      } else {
-        req.decoded = decoded;
-        next();
-      }
-    });
   } else {
-    return res.status(403).send({
-      success: false,
-      message: 'No token provided.'
-    });
+    const token = (req.body && req.body.token) || (req.query && req.query.token) || req.headers['x-access-token'];
+    if (token) {
+      jwt.verify(token, env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+          res.status(403).json({ error: 'Failed to authenticate token' });
+        } else {
+          if (new Date().getTime() / 1000 > decoded.exp) {
+            res.status(403).json({ error: 'Token is expired' });
+          } else {
+            req.headers.user = decoded;
+            next();
+          }
+        }
+      });
+    } else {
+      res.status(403).json({ error: 'No token provided' });
+    }
   }
 }

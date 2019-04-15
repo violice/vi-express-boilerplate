@@ -4,17 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src",
+    "start": "cross-env NODE_PATH=./src nodemon --exec babel-node src",
     "build": "babel src --out-dir dist"
   },
   "author": "Sergey Ivashko",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
+    "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
     "pg": "^7.9.0",
     "sequelize": "^4.42.0"

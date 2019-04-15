@@ -1,4 +1,4 @@
-import { User } from '../models';
+import { User } from 'models';
 
 const getUsers = async (req, res) => {
   try {
@@ -12,4 +12,4 @@ const getUsers = async (req, res) => {
   }
 }
 
-export default { getUsers };
+export { getUsers };

@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { userModel } from '../models';
+import bcrypt from 'bcrypt';
 
-const secret = '666B2076FB63ABC711101483F16B6E321765FDDC6706D50DC88ED3C387A65AD6';
+import env from 'env';
+import { User } from 'models';
+
+const createToken = user => jwt.sign(user, env.JWT_SECRET, { expiresIn: '14d' });
 
 const login = async (req, res) => {
   try {
@@ -12,18 +15,21 @@ const login = async (req, res) => {
     if (!password) {
       return res.status(422).json({ error: 'Password is required' });
     }
-    const user = (await userModel.findOne({ where: { username, password } })).dataValues;
+    const user = await User.findOne({ where: { username } });
     if (user) {
-      const token = jwt.sign(user, secret, { expiresIn: 60 * 60 * 24 * 7 });
-      res.status(200).json({ user, token });
+      const check = await bcrypt.compare(password, user.dataValues.password);
+      if (check) {
+        delete user.dataValues.password;
+        const token = createToken(user.dataValues);
+        res.status(200).json({ user, token });
+      } else {
+        res.status(422).json({ error: 'Incorrect password' });
+      }
     } else {
       res.status(422).json({ error: 'User with such username wasn\'t found' });
     }
   } catch (e) {
-    res.status(422).json({
-      error: e.message,
-      raw: e,
-    });
+    res.status(422).json({ error: e.message, raw: e });
   }
 }
 
@@ -36,11 +42,14 @@ const registration = async (req, res) => {
     if (!password) {
       return res.status(422).json({ error: 'Password is required' });
     }
-    if (await userModel.findOne({ where: { username } })) {
+    const oldUser = await User.findOne({ where: { username } });
+    if (oldUser) {
       return res.status(422).json({ error: 'User with this username already exist' });
     }
-    const user = (await userModel.create({ username, password })).dataValues;
-    const token = jwt.sign(user, secret, { expiresIn: 60 * 60 * 24 * 7 });
+    const hash = await bcrypt.hash(password, Number(env.BCRYPT_SALT_ROUNDS));
+    const user = await User.create({ username, password: hash });
+    delete user.dataValues.password;
+    const token = createToken(user.dataValues);
     res.status(200).json({ user, token });
   } catch (e) {
     res.status(422).json({
@@ -50,4 +59,4 @@ const registration = async (req, res) => {
   }
 }
 
-export default { login, registration };
+export { login, registration };
