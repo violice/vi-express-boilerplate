@@ -50,7 +50,8 @@ const registration = async (req, res) => {
     const user = await User.create({ username, password: hash });
     delete user.dataValues.password;
     const token = createToken(user.dataValues);
-    res.status(200).json({ user, token });
+    res.cookie('token', token);
+    res.status(200).json({ user });
   } catch (e) {
     res.status(422).json({
       error: e.message,
