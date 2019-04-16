@@ -31,7 +31,7 @@ const login = async (req, res) => {
   } catch (e) {
     res.status(422).json({ error: e.message, raw: e });
   }
-}
+};
 
 const registration = async (req, res) => {
   try {
@@ -57,6 +57,6 @@ const registration = async (req, res) => {
       raw: e,
     });
   }
-}
+};
 
 export { login, registration };

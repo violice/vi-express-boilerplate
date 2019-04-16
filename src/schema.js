@@ -10,6 +10,6 @@ export default new Sequelize(env.POSTGRES_DB, env.POSTGRES_USER, env.POSTGRES_PA
     max: 5,
     min: 0,
     acquire: 30000,
-    idle: 10000
+    idle: 10000,
   },
 });

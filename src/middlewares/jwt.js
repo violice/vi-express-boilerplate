@@ -4,7 +4,7 @@ import env from 'env';
 
 const WHITE_LIST = [
   '/api/login',
-  '/api/registration'
+  '/api/registration',
 ];
 
 export default (req, res, next) => {
@@ -16,17 +16,15 @@ export default (req, res, next) => {
       jwt.verify(token, env.JWT_SECRET, (err, decoded) => {
         if (err) {
           res.status(403).json({ error: 'Failed to authenticate token' });
+        } else if (new Date().getTime() / 1000 > decoded.exp) {
+          res.status(403).json({ error: 'Token is expired' });
         } else {
-          if (new Date().getTime() / 1000 > decoded.exp) {
-            res.status(403).json({ error: 'Token is expired' });
-          } else {
-            req.headers.user = decoded;
-            next();
-          }
+          req.headers.user = decoded;
+          next();
         }
       });
     } else {
       res.status(403).json({ error: 'No token provided' });
     }
   }
-}
+};

@@ -12,7 +12,7 @@ const corsConfig = {
     'Accept',
     'Set-Cookie',
     'Connection',
-    '*'
+    '*',
   ],
   exposedHeaders: [
     'Authorization',
@@ -24,11 +24,11 @@ const corsConfig = {
     'Accept',
     'Set-Cookie',
     'Connection',
-    '*'
+    '*',
   ],
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'INDEX', 'OPTIONS'],
   credentials: true,
-  maxAge: 3600
+  maxAge: 3600,
 };
 
 const corsOptionsDelegate = (req, callback) => {
@@ -36,7 +36,7 @@ const corsOptionsDelegate = (req, callback) => {
 
   callback(null, {
     ...corsConfig,
-    origin
+    origin,
   });
 };
 

@@ -11,7 +11,7 @@ import cors from './cors';
 import schema from './schema';
 
 const app = express();
-app.use(morgan(env.MORGAN_TEMPLATE))
+app.use(morgan(env.MORGAN_TEMPLATE));
 app.use(cors);
 app.use(jwt);
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,4 +27,4 @@ schema.sync({ logging: false })
     server.listen(env.PORT);
     console.log(`--- SERVER IS LISTENING ON PORT ${env.PORT} ---`);
   })
-  .catch((e) => console.error('--- DB CONNECT/SYNC ERROR ---', e));
+  .catch(e => console.error('--- DB CONNECT/SYNC ERROR ---', e));
