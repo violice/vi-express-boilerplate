@@ -1,8 +1,8 @@
 {
   "name": "vi-express-boilerplate",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "cross-env NODE_PATH=./src nodemon --exec babel-node src",
     "build": "babel src --out-dir dist"
