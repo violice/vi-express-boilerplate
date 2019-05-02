@@ -11,7 +11,7 @@ export default (req, res, next) => {
   if (WHITE_LIST.includes(req.path)) {
     next();
   } else {
-    const token = (req.body && req.body.token) || (req.cookie && req.cookie.token) || (req.query && req.query.token) || req.headers['x-access-token'];
+    const token = (req.body && req.body.token) || (req.cookies && req.cookies.token) || (req.query && req.query.token) || req.headers['x-access-token'];
     if (token) {
       jwt.verify(token, env.JWT_SECRET, (err, decoded) => {
         if (err) {
